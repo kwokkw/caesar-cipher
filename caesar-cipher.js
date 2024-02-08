@@ -87,7 +87,7 @@ function decrypt (encryptedMessage, shiftValue)
         
         // Create a newIndex variable to store the new index of a right shifted letter by a given value.
         // Ensuring the shift wraps around the alhabet if it exceeds by using mod operator.
-        // I shiftValue bigger than alphabet.lenght we need "additional amount of alphabet.length" proportionally
+        // If shiftValue bigger than alphabet.lenght we need "additional amount of alphabet.length" proportionally
         const newIndex = ((index - shiftValue) + Math.ceil(shiftValue/alphabet.length)*alphabet.length) % alphabet.length      
         // Return a encrypted letter by using bracket notation.       
         return alphabet[newIndex]
