@@ -58,9 +58,9 @@ function encrypt (message, shiftValue)
     // Create a variable to store an empty string
     // Value will be updated accordingly thus, let keyword
     let encryptedMessage = ""
-
+    let i; //needed for further using
     // Loop through every two letters starting at the first letter 
-    for (let i = 0; i < encryptingMessage.length-1; i+=2)
+    for (i = 0; i < encryptingMessage.length-1; i+=2)
     {   
         // Generate a random integer that acts as index
         const randomInt = Math.floor(Math.random() * alphabet.length)
@@ -71,7 +71,8 @@ function encrypt (message, shiftValue)
         // After every two characters in the encrypted message, insert a random letter.
         encryptedMessage += encryptingMessage.slice(i, i + 2) + randomLetter
     }
-
+    //for remaining 1 or 2 letters
+    encryptedMessage += encryptingMessage.slice(i)
     // Return to the randomEncryptedMsg value.
     return encryptedMessage 
 }
@@ -86,9 +87,9 @@ function decrypt (encryptedMessage, shiftValue)
         
         // Create a newIndex variable to store the new index of a right shifted letter by a given value.
         // Ensuring the shift wraps around the alhabet if it exceeds by using mod operator.
-        const newIndex = (index - shiftValue + alphabet.length) % alphabet.length 
-        
-        // Return a encrypted letter by using bracket notation.
+        // I shiftValue bigger than alphabet.lenght we need "additional amount of alphabet.length" proportionally
+        const newIndex = ((index - shiftValue) + Math.ceil(shiftValue/alphabet.length)*alphabet.length) % alphabet.length      
+        // Return a encrypted letter by using bracket notation.       
         return alphabet[newIndex]
     }
 
@@ -109,7 +110,7 @@ function decrypt (encryptedMessage, shiftValue)
     
     let decryptedMessage = ""
     
-    for (letter of encryptedMessage)
+    for (letter of decryptingMessage)
     {        
         if (alphabet.includes(letter))
         {
@@ -117,12 +118,13 @@ function decrypt (encryptedMessage, shiftValue)
             decryptedMessage += decryptLetter(letter)
         }
 
-        // else if statement here to handle uppercase letter
-        
-        else
+       //treat UpperCase
+        else if (alphabet.includes(letter.toLowerCase()))
         {
-            decryptedMessage += letter
-        }
+            // Call the encryptedLetter function, convert it back to uppercase, assigns the letter to the encryptingMessage variable using addition assignment operator
+            decryptedMessage += decryptLetter(letter.toLowerCase()).toUpperCase()
+             // else if statement here to handle uppercase letter
+        }else decryptedMessage += letter       
     }
 
     console.log(decryptedMessage)
@@ -131,10 +133,10 @@ function decrypt (encryptedMessage, shiftValue)
     return decryptedMessage;
 }
 
-//encrypt("Hello Brutus, meet me at the high gardens.", 42)
+encrypt("Hello Brutus, meet me at the high gardens.", 42)
 //Xubbe Rhkjki, cuuj cu qj jxu xywx wqhtudi
 
-//decrypt("Xuobbce eRhakjikiw, gcueujr cfu wqjy jzxul xfywox pwqghtiudri.")
+decrypt("Xuobbce eRhakjikiw, gcueujr cfu wqjy jzxul xfywox pwqghtiudri.", 42)
 //Hello Brutus, meet me at the high gardens..
 
 /**************************************************************************
